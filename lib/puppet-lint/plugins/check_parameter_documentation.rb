@@ -1,6 +1,8 @@
 PuppetLint.new_check(:parameter_documentation) do
   def check
     class_indexes.each do |klass|
+      next if klass[:param_tokens].nil?
+
       doc_params = []
       tokens[0..klass[:start]].reverse_each do |dtok|
         next if [:CLASS, :NEWLINE, :WHITESPACE, :INDENT].include?(dtok.type)
