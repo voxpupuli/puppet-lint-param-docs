@@ -75,4 +75,12 @@ describe 'parameter_documentation' do
       expect(problems).to have(0).problems
     end
   end
+
+  context 'class without parameters and a function call' do
+    let(:code) { 'class example { a($foo::bar) }' }
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
 end
