@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'parameter_documentation' do
-  let(:msg) { 'missing documentation for class parameter example::foo' }
+  let(:msg) { 'missing documentation for class parameter example::%s' }
 
   context 'class missing any documentation' do
     let(:code) { 'class example($foo) { }' }
@@ -11,7 +11,7 @@ describe 'parameter_documentation' do
     end
 
     it 'should create a warning' do
-      expect(problems).to contain_warning(msg).on_line(1).in_column(15)
+      expect(problems).to contain_warning(msg % :foo).on_line(1).in_column(15)
     end
   end
 
@@ -23,13 +23,30 @@ describe 'parameter_documentation' do
     end
 
     it 'should create a warning' do
-      expect(problems).to contain_warning(msg).on_line(1).in_column(15)
+      expect(problems).to contain_warning(msg % :foo).on_line(1).in_column(15)
+    end
+  end
+
+  context 'class with many param defaults' do
+    let(:code) do
+      <<-EOS
+class foreman (
+  $foreman_url            = $foreman::params::foreman_url,
+  $unattended             = $foreman::params::unattended,
+  $authentication         = $foreman::params::authentication,
+  $passenger              = $foreman::params::passenger,
+) {}
+      EOS
+    end
+
+    it 'should detect four problems' do
+      expect(problems).to have(4).problems
     end
   end
 
   context 'class missing documentation for a parameter' do
     let(:code) do
-      <<-EOS
+      <<-EOS.gsub(/^\s+/, '')
       # Example class
       #
       # === Parameters:
@@ -45,8 +62,30 @@ describe 'parameter_documentation' do
     end
 
     it 'should create a warning' do
-      # column looks wrong, maybe the parser's out
-      expect(problems).to contain_warning(msg).on_line(7).in_column(21)
+      expect(problems).to contain_warning(msg % :foo).on_line(7).in_column(15)
+    end
+  end
+
+  context 'class missing documentation for a second parameter' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # Example class
+      #
+      # === Parameters:
+      #
+      # $bar:: example
+      #
+      class example($foo, $bar, $baz) { }
+      EOS
+    end
+
+    it 'should detect two problem' do
+      expect(problems).to have(2).problems
+    end
+
+    it 'should create two warnings' do
+      expect(problems).to contain_warning(msg % :foo).on_line(7).in_column(15)
+      expect(problems).to contain_warning(msg % :baz).on_line(7).in_column(27)
     end
   end
 

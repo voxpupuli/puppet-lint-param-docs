@@ -15,18 +15,18 @@ PuppetLint.new_check(:parameter_documentation) do
 
       params = []
       e = klass[:param_tokens].each
-      e.each do |ptok|
-        params << ptok if ptok.type == :VARIABLE
-        # skip to the next parameter to avoid finding default values of variables
-        begin
-          while true
-            ptok = e.next
-            break if ptok == :COMMA
+      begin
+        while (ptok = e.next)
+          if ptok.type == :VARIABLE
+            params << ptok
+            # skip to the next parameter to avoid finding default values of variables
+            while true
+              ptok = e.next
+              break if ptok.type == :COMMA
+            end
           end
-        rescue StopIteration
-          break
         end
-      end
+      rescue StopIteration; end
 
       params.each do |p|
         next if doc_params.include? p.value
