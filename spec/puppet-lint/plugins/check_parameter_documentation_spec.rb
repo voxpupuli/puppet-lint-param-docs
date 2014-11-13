@@ -44,7 +44,7 @@ class foreman (
     end
   end
 
-  context 'class missing documentation for a parameter' do
+  context 'class missing documentation ($bar::) for a parameter' do
     let(:code) do
       <<-EOS.gsub(/^\s+/, '')
       # Example class
@@ -66,7 +66,29 @@ class foreman (
     end
   end
 
-  context 'class missing documentation for a second parameter' do
+  context 'class missing documentation ([*bar*]) for a parameter' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # Example class
+      #
+      # === Parameters:
+      #
+      # [*bar*] example
+      #
+      class example($foo, $bar) { }
+      EOS
+    end
+
+    it 'should detect a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'should create a warning' do
+      expect(problems).to contain_warning(msg % :foo).on_line(7).in_column(15)
+    end
+  end
+
+  context 'class missing documentation ($bar::) for a second parameter' do
     let(:code) do
       <<-EOS.gsub(/^\s+/, '')
       # Example class
@@ -89,7 +111,30 @@ class foreman (
     end
   end
 
-  context 'class with all parameters documented' do
+  context 'class missing documentation ([*bar*]) for a second parameter' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # Example class
+      #
+      # === Parameters:
+      #
+      # [*bar*] example
+      #
+      class example($foo, $bar, $baz) { }
+      EOS
+    end
+
+    it 'should detect two problem' do
+      expect(problems).to have(2).problems
+    end
+
+    it 'should create two warnings' do
+      expect(problems).to contain_warning(msg % :foo).on_line(7).in_column(15)
+      expect(problems).to contain_warning(msg % :baz).on_line(7).in_column(27)
+    end
+  end
+
+  context 'class with all parameters documented ($foo::)' do
     let(:code) do
       <<-EOS
       # Example class
@@ -97,6 +142,24 @@ class foreman (
       # === Parameters:
       #
       # $foo:: example
+      #
+      class example($foo) { }
+      EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
+  context 'class with all parameters documented ([*foo*])' do
+    let(:code) do
+      <<-EOS
+      # Example class
+      #
+      # === Parameters:
+      #
+      # [*foo*] example
       #
       class example($foo) { }
       EOS
