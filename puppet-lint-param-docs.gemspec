@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'puppet-lint-param-docs'
-  spec.version     = '1.0.1'
+  spec.version     = '1.1.0'
   spec.homepage    = 'https://github.com/domcleal/puppet-lint-param-docs'
   spec.license     = 'MIT'
   spec.author      = 'Dominic Cleal'
