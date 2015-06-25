@@ -1,11 +1,11 @@
 PuppetLint.new_check(:parameter_documentation) do
   def check
-    class_indexes.each do |klass|
-      next if klass[:param_tokens].nil?
+    class_indexes.concat(defined_type_indexes).each do |idx|
+      next if idx[:param_tokens].nil?
 
       doc_params = []
-      tokens[0..klass[:start]].reverse_each do |dtok|
-        next if [:CLASS, :NEWLINE, :WHITESPACE, :INDENT].include?(dtok.type)
+      tokens[0..idx[:start]].reverse_each do |dtok|
+        next if [:CLASS, :DEFINE, :NEWLINE, :WHITESPACE, :INDENT].include?(dtok.type)
         if [:COMMENT, :MLCOMMENT, :SLASH_COMMENT].include?(dtok.type)
           if dtok.value =~ /\A\s*\[\*([a-zA-Z0-9_]+)\*\]/ or
              dtok.value =~ /\A\s*\$([a-zA-Z0-9_]+)::/
@@ -17,7 +17,7 @@ PuppetLint.new_check(:parameter_documentation) do
       end
 
       params = []
-      e = klass[:param_tokens].each
+      e = idx[:param_tokens].each
       begin
         while (ptok = e.next)
           if ptok.type == :VARIABLE
@@ -33,8 +33,9 @@ PuppetLint.new_check(:parameter_documentation) do
 
       params.each do |p|
         next if doc_params.include? p.value
+        idx_type = idx[:type] == :CLASS ? "class" : "defined type"
         notify :warning, {
-          :message => "missing documentation for class parameter #{klass[:name_token].value}::#{p.value}",
+          :message => "missing documentation for #{idx_type} parameter #{idx[:name_token].value}::#{p.value}",
           :line    => p.line,
           :column  => p.column,
         }
