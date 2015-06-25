@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'puppet-lint-param-docs'
-  spec.version     = '1.1.0'
+  spec.version     = '1.2.0'
   spec.homepage    = 'https://github.com/domcleal/puppet-lint-param-docs'
   spec.license     = 'MIT'
   spec.author      = 'Dominic Cleal'
@@ -14,8 +14,7 @@ Gem::Specification.new do |spec|
   spec.test_files  = Dir['spec/**/*']
   spec.summary     = 'puppet-lint check to validate all parameters are documented'
   spec.description = <<-EOF
-    A new check for puppet-lint that validates all class parameters are
-    documented.
+    A new check for puppet-lint that validates all parameters are documented.
   EOF
 
   spec.add_dependency             'puppet-lint', '~> 1.1'

@@ -1,7 +1,7 @@
 # puppet-lint parameter documentation check
 
-Adds a new puppet-lint check to verify all class parameters have been
-documented.
+Adds a new puppet-lint check to verify all class and defined type parameters
+have been documented.
 
 Particularly useful with [kafo](https://github.com/theforeman/kafo), as its
 default behaviour is to throw an error when a parameter is undocumented.
@@ -23,9 +23,10 @@ This plugin provides a new check to `puppet-lint`.
 
 **--fix support: No**
 
-This check will raise a warning for any class parameters that don't have an
-RDoc description.
+This check will raise a warning for any class or defined type parameters that
+don't have an RDoc description.
 
 ```
 WARNING: missing documentation for class parameter foo::bar
+WARNING: missing documentation for defined type parameter foo::baz
 ```
