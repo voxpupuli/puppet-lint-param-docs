@@ -30,3 +30,20 @@ don't have an RDoc description.
 WARNING: missing documentation for class parameter foo::bar
 WARNING: missing documentation for defined type parameter foo::baz
 ```
+
+### Selective rake task
+
+The usual puppet-lint rake task checks all manifests, which isn't always
+desirable with this particular check.  If your module contains many classes,
+some of which you don't wish to document, then you can exclude them using
+[control comments](http://puppet-lint.com/controlcomments/) or by using this
+helper to customise the lint rake task:
+
+  require 'puppet-lint-param-docs/tasks'
+  PuppetLintParamDocs.define_selective do |config|
+    config.pattern = ['manifests/init.pp', 'manifests/other/**/*.pp']
+  end
+
+This would disable the parameter_documentation check by default, but then
+defines a new rake task (which runs after `lint`) specifically for the files
+given in `config.pattern`.
