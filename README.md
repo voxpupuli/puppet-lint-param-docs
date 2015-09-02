@@ -39,10 +39,10 @@ some of which you don't wish to document, then you can exclude them using
 [control comments](http://puppet-lint.com/controlcomments/) or by using this
 helper to customise the lint rake task:
 
-  require 'puppet-lint-param-docs/tasks'
-  PuppetLintParamDocs.define_selective do |config|
-    config.pattern = ['manifests/init.pp', 'manifests/other/**/*.pp']
-  end
+    require 'puppet-lint-param-docs/tasks'
+    PuppetLintParamDocs.define_selective do |config|
+      config.pattern = ['manifests/init.pp', 'manifests/other/**/*.pp']
+    end
 
 This would disable the parameter_documentation check by default, but then
 defines a new rake task (which runs after `lint`) specifically for the files
