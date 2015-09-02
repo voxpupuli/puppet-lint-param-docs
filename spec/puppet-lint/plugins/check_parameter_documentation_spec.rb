@@ -369,4 +369,26 @@ define foreman (
       expect(problems).to have(0).problems
     end
   end
+
+  context 'class with hard tab indentation and rdoc parsing ($bar::)' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # Example class
+      #
+      # === Parameters:
+      #
+      # $foo::	example
+      #
+      class example($foo) { }
+      EOS
+    end
+
+    it 'should detect a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'should create a warning' do
+      expect(problems).to contain_warning(class_msg % :foo).on_line(7).in_column(15)
+    end
+  end
 end
