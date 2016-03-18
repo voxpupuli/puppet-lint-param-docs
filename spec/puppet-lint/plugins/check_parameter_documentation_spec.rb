@@ -130,6 +130,44 @@ define foreman (
     end
   end
 
+  context 'class missing documentation (@param bar) for a parameter' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # Example class
+      #
+      # @param bar example
+      class example($foo, $bar) { }
+      EOS
+    end
+
+    it 'should detect a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'should create a warning' do
+      expect(problems).to contain_warning(class_msg % :foo).on_line(4).in_column(15)
+    end
+  end
+
+  context 'define missing documentation (@param bar) for a parameter' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # Example class
+      #
+      # @param bar example
+      define example($foo, $bar) { }
+      EOS
+    end
+
+    it 'should detect a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'should create a warning' do
+      expect(problems).to contain_warning(define_msg % :foo).on_line(4).in_column(16)
+    end
+  end
+
   context 'class missing documentation ([*bar*]) for a parameter' do
     let(:code) do
       <<-EOS.gsub(/^\s+/, '')
