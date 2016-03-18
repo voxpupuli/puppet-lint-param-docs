@@ -31,6 +31,45 @@ WARNING: missing documentation for class parameter foo::bar
 WARNING: missing documentation for defined type parameter foo::baz
 ```
 
+### Documentation styles
+
+The check will accept any of the following styles:
+
+#### Puppet Strings
+
+Used by [Puppet Strings](https://github.com/puppetlabs/puppetlabs-strings).
+
+    # Example class
+    #
+    # @param foo example
+    define example($foo) { }
+
+#### Puppet Doc style
+
+Used by the [puppet-doc](https://docs.puppetlabs.com/puppet/latest/reference/man/doc.html)
+command, generally deprecated in favour of Puppet Strings.
+
+    # Example class
+    #
+    # === Parameters:
+    #
+    # [*foo*] example
+    #
+    class example($foo) { }
+
+#### Kafo rdoc style
+
+Used in [kafo](https://github.com/theforeman/kafo#documentation) following an
+rdoc style.
+
+    # Example class
+    #
+    # === Parameters:
+    #
+    # $foo:: example
+    #
+    class example($foo) { }
+
 ### Selective rake task
 
 The usual puppet-lint rake task checks all manifests, which isn't always
