@@ -376,6 +376,44 @@ define foreman (
     end
   end
 
+  context 'class with all parameters documented (@param)' do
+    let(:code) do
+      <<-EOS
+      # Example class
+      #
+      # === Parameters:
+      #
+      # @param foo example
+      # @param [Integer] bar example
+      #
+      class example($foo, $bar) { }
+      EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
+  context 'define with all parameters documented (@param)' do
+    let(:code) do
+      <<-EOS
+      # Example define
+      #
+      # === Parameters:
+      #
+      # @param foo example
+      # @param [Integer] bar example
+      #
+      define example($foo, $bar) { }
+      EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
   context 'class without parameters' do
     let(:code) { 'class example { }' }
 
