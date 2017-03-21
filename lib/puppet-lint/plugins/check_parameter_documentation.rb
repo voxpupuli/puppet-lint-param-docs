@@ -9,7 +9,7 @@ PuppetLint.new_check(:parameter_documentation) do
         if [:COMMENT, :MLCOMMENT, :SLASH_COMMENT].include?(dtok.type)
           if dtok.value =~ /\A\s*\[\*([a-zA-Z0-9_]+)\*\]/ or
              dtok.value =~ /\A\s*\$([a-zA-Z0-9_]+):: +/ or
-             dtok.value =~ /\A\s*@param (?:\[.+\] )?([a-zA-Z0-9_]+) +/
+             dtok.value =~ /\A\s*@param (?:\[.+\] )?([a-zA-Z0-9_]+)(?: +|$)/
             doc_params << $1
           end
         else
