@@ -385,8 +385,12 @@ define foreman (
       #
       # @param foo example
       # @param [Integer] bar example
+      # @param baz
+      #   example
+      # @param [Integer] qux
+      #   example
       #
-      class example($foo, $bar) { }
+      class example($foo, $bar, $baz, $qux) { }
       EOS
     end
 
@@ -404,8 +408,12 @@ define foreman (
       #
       # @param foo example
       # @param [Integer] bar example
+      # @param baz
+      #   example
+      # @param [Integer] qux
+      #   example
       #
-      define example($foo, $bar) { }
+      define example($foo, $bar, $baz, $qux) { }
       EOS
     end
 
