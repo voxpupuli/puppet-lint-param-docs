@@ -1,10 +1,10 @@
 Gem::Specification.new do |spec|
   spec.name        = 'puppet-lint-param-docs'
   spec.version     = '1.4.1'
-  spec.homepage    = 'https://github.com/domcleal/puppet-lint-param-docs'
+  spec.homepage    = 'https://github.com/voxpupuli/puppet-lint-param-docs'
   spec.license     = 'MIT'
-  spec.author      = 'Dominic Cleal'
-  spec.email       = 'dcleal@redhat.com'
+  spec.author      = 'Vox Pupuli'
+  spec.email       = 'voxpupuli@groups.io'
   spec.files       = Dir[
     'README.md',
     'LICENSE',
