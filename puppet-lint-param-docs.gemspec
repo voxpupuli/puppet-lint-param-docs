@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'puppet-lint-param-docs'
-  spec.version     = '1.4.1'
+  spec.version     = '1.4.2'
   spec.homepage    = 'https://github.com/voxpupuli/puppet-lint-param-docs'
   spec.license     = 'MIT'
   spec.author      = 'Vox Pupuli'
