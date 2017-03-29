@@ -1,2 +1,11 @@
 language: ruby
 sudo: false
+
+deploy:
+  provider: rubygems
+  api_key:
+    secure: hyCFDUbXeBClJkMKd4/eOPzjj9n8VxxbTqPcN0QfqhRBWVDjwc//9vtjIPb1h3QyjRAbfs3ftZQAHlxYqA8dHxuhn0mCdtHqAY36NIlqlshQAptHxcXDBZnGU1P9lR/X7nsGOZOJKkjxYDs5rq8f5NgDZr6dWk71jD3hErm8nvE=
+  gem: puppet-lint-param-docs
+  on:
+    tags: true
+    repo: voxpupuli/puppet-lint-param-docs
