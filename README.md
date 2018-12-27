@@ -86,3 +86,6 @@ helper to customise the lint rake task:
 This would disable the parameter_documentation check by default, but then
 defines a new rake task (which runs after `lint`) specifically for the files
 given in `config.pattern`.
+
+The [Puppet Strings](#puppet_strings) `@api private` directive can also be used
+to disable checks on that file.

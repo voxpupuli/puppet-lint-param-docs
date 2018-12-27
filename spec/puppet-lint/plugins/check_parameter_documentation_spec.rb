@@ -149,6 +149,27 @@ define foreman (
     end
   end
 
+  context 'private class missing documentation (@param bar) for a parameter' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # Example class
+      #
+      # @api private
+      #
+      # @param bar example
+      class example($foo, $bar) { }
+      EOS
+    end
+
+    it 'should detect no single problems' do
+      expect(problems).to have(0).problems
+    end
+
+    it 'should not create a warning' do
+      expect(problems).not_to contain_info(class_msg % :foo)
+    end
+  end
+
   context 'define missing documentation (@param bar) for a parameter' do
     let(:code) do
       <<-EOS.gsub(/^\s+/, '')

@@ -4,6 +4,7 @@ PuppetLint.new_check(:parameter_documentation) do
       next if idx[:param_tokens].nil?
 
       doc_params = []
+      is_private = false
       tokens[0..idx[:start]].reverse_each do |dtok|
         next if [:CLASS, :DEFINE, :NEWLINE, :WHITESPACE, :INDENT].include?(dtok.type)
         if [:COMMENT, :MLCOMMENT, :SLASH_COMMENT].include?(dtok.type)
@@ -12,10 +13,14 @@ PuppetLint.new_check(:parameter_documentation) do
              dtok.value =~ /\A\s*@param (?:\[.+\] )?([a-zA-Z0-9_]+)(?: +|$)/
             doc_params << $1
           end
+
+          is_private = true if dtok.value =~ /\A\s*@api +private\s*$/
         else
           break
         end
       end
+
+      next if is_private
 
       params = []
       e = idx[:param_tokens].each
