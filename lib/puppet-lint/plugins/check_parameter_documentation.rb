@@ -28,10 +28,18 @@ PuppetLint.new_check(:parameter_documentation) do
         while (ptok = e.next)
           if ptok.type == :VARIABLE
             params << ptok
+            nesting = 0
             # skip to the next parameter to avoid finding default values of variables
             while true
               ptok = e.next
-              break if ptok.type == :COMMA
+              case ptok.type
+              when :LPAREN
+                nesting += 1
+              when :RPAREN
+                nesting -= 1
+              when :COMMA
+                break unless nesting > 0
+              end
             end
           end
         end
