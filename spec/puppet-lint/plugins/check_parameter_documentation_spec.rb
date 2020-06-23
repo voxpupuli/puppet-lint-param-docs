@@ -52,6 +52,18 @@ describe 'parameter_documentation' do
     end
   end
 
+  context 'define with param defaults using a function' do
+    let(:code) { 'define example($foo = min(8, $facts["processors"]["count"])) { }' }
+
+    it 'should detect a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'should create a warning' do
+      expect(problems).to contain_warning(define_msg % :foo).on_line(1).in_column(16)
+    end
+  end
+
   context 'class with many param defaults' do
     let(:code) do
       <<-EOS
@@ -435,6 +447,42 @@ define foreman (
       #   example
       #
       define example($foo, $bar, $baz, $qux) { }
+      EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
+  context 'define with all parameters documented with defaults (@param)' do
+    let(:code) do
+      <<-EOS
+      # Example define
+      #
+      # @param foo example
+      #
+      define example($foo = $facts['networking']['fqdn']) { }
+      EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
+  context 'define with all parameters documented with defaults using functions (@param)' do
+    let(:code) do
+      <<-EOS
+      # Example define
+      #
+      # @param foo example
+      # @param multiple test nested function calls
+      #
+      define example(
+        $foo = min(8, $facts['processors']['count']),
+        $multiple = min(8, max(2, $facts['processors']['count'])),
+      ) { }
       EOS
     end
 
