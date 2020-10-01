@@ -8,7 +8,7 @@ PuppetLint.new_check(:parameter_documentation) do
       is_private = false
       tokens[0..idx[:start]].reverse_each do |dtok|
         next if [:CLASS, :DEFINE, :NEWLINE, :WHITESPACE, :INDENT].include?(dtok.type)
-        if [:COMMENT, :MLCOMMENT, :SLASH_COMMENT].include?(dtok.type)
+        if dtok.type == :COMMENT
           if dtok.value =~ /\A\s*\[\*([a-zA-Z0-9_]+)\*\]/ or
              dtok.value =~ /\A\s*\$([a-zA-Z0-9_]+):: +/ or
              dtok.value =~ /\A\s*@param (?:\[.+\] )?([a-zA-Z0-9_]+)(?: +|$)/
