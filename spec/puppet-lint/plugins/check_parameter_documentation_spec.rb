@@ -544,4 +544,92 @@ define foreman (
       expect(problems).to contain_warning(class_msg % :foo).on_line(7).in_column(15)
     end
   end
+
+  context 'class with parameters documented twice (@param)' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example class
+      #
+      # @param bar
+      #   example
+      # @param foo example
+      # @param bar Duplicate/conflicting docs
+      #
+      class example($foo, $bar) { }
+    EOS
+    end
+
+    it 'should detect two problems' do
+      expect(problems).to have(2).problem
+    end
+
+    it 'should create a warning on line 3' do
+      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(3).in_column(10)
+    end
+
+    it 'should create a warning on line 6' do
+      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(6).in_column(10)
+    end
+  end
+
+  context 'class with parameters documented 3 times (@param)' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example class
+      #
+      # @param bar
+      #   example
+      # @param foo example
+      # @param bar Duplicate/conflicting docs
+      #
+      # @param bar
+      #   example
+      #
+      class example($foo, $bar) { }
+    EOS
+    end
+
+    it 'should detect three problems' do
+      expect(problems).to have(3).problem
+    end
+
+    it 'should create a warning on line 3' do
+      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(3).in_column(10)
+    end
+
+    it 'should create a warning on line 6' do
+      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(6).in_column(10)
+    end
+
+    it 'should create a warning on line 8' do
+      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(8).in_column(10)
+    end
+  end
+
+  context 'class with parameters documented twice ([*bar*])' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example class
+      #
+      # @param bar
+      #   example
+      # @param foo example
+      # [*bar*] Duplicate/conflicting docs
+      #
+      class example($foo, $bar) { }
+    EOS
+    end
+
+    it 'should detect two problems' do
+      expect(problems).to have(2).problem
+    end
+
+    it 'should create a warning on line 3' do
+      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(3).in_column(10)
+    end
+
+    it 'should create a warning on line 6' do
+      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(6).in_column(3)
+    end
+  end
 end
