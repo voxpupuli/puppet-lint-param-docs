@@ -564,11 +564,11 @@ define foreman (
     end
 
     it 'should create a warning on line 3' do
-      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(3).in_column(10)
+      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(3).in_column(10)
     end
 
     it 'should create a warning on line 6' do
-      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(6).in_column(10)
+      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(6).in_column(10)
     end
   end
 
@@ -594,15 +594,41 @@ define foreman (
     end
 
     it 'should create a warning on line 3' do
-      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(3).in_column(10)
+      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(3).in_column(10)
     end
 
     it 'should create a warning on line 6' do
-      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(6).in_column(10)
+      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(6).in_column(10)
     end
 
     it 'should create a warning on line 8' do
-      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(8).in_column(10)
+      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(8).in_column(10)
+    end
+  end
+
+  context 'private class with parameters documented twice (@param)' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example class
+      #
+      # @param bar docs
+      # @param bar Duplicate/conflicting docs
+      #
+      # @api private
+      class example($bar) { }
+    EOS
+    end
+
+    it 'should detect two problems' do
+      expect(problems).to have(2).problem
+    end
+
+    it 'should create a warning on line 3' do
+      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(3).in_column(10)
+    end
+
+    it 'should create a warning on line 4' do
+      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(4).in_column(10)
     end
   end
 
@@ -625,11 +651,75 @@ define foreman (
     end
 
     it 'should create a warning on line 3' do
-      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(3).in_column(10)
+      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(3).in_column(10)
     end
 
     it 'should create a warning on line 6' do
-      expect(problems).to contain_warning('Duplicate parameter documentation for bar').on_line(6).in_column(3)
+      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(6).in_column(3)
+    end
+  end
+
+  context 'class with documentation for parameters that don\'t exist' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example class
+      #
+      # @param foo
+      class example { }
+    EOS
+    end
+
+    it 'should detect a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'should create a warning on line 3' do
+      expect(problems).to contain_warning('No matching class parameter for documentation of foo').on_line(3).in_column(10)
+    end
+  end
+
+  context 'private class with documentation for parameters that don\'t exist' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example class
+      #
+      # @param foo
+      #   Example docs
+      #
+      # @api private
+      class example { }
+    EOS
+    end
+
+    it 'should detect a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'should create a warning on line 3' do
+      expect(problems).to contain_warning('No matching class parameter for documentation of foo').on_line(3).in_column(10)
+    end
+  end
+
+  context 'define with documentation for parameters that don\'t exist' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example define
+      #
+      # @param bar Docs for bar
+      # @param foo
+      #   Docs for foo
+      #
+      # @api private
+      define example::example(String[1] $bar) { }
+    EOS
+    end
+
+    it 'should detect a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'should create a warning on line 4' do
+      expect(problems).to contain_warning('No matching defined type parameter for documentation of foo').on_line(4).in_column(10)
     end
   end
 end
