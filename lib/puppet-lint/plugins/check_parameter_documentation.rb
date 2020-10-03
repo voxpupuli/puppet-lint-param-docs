@@ -10,10 +10,12 @@ PuppetLint.new_check(:parameter_documentation) do
           if dtok.value =~ /\A\s*\[\*([a-zA-Z0-9_]+)\*\]/ or
              dtok.value =~ /\A\s*\$([a-zA-Z0-9_]+):: +/ or
              dtok.value =~ /\A\s*@param (?:\[.+\] )?([a-zA-Z0-9_]+)(?: +|$)/
-            if doc_params.include? $1
-              doc_params_duplicates[$1] << dtok
+            parameter = $1
+            parameter = 'name/title' if idx[:type] == :DEFINE && ['name','title'].include?(parameter)
+            if doc_params.include? parameter
+              doc_params_duplicates[parameter] << dtok
             else
-              doc_params[$1] = dtok
+              doc_params[parameter] = dtok
             end
           end
 
@@ -38,6 +40,7 @@ PuppetLint.new_check(:parameter_documentation) do
 
       # warn about documentation for parameters that don't exist
       doc_params.each do |parameter, token|
+        next if parameter == 'name/title' && idx[:type] == :DEFINE
         next if params.find { |p| p.value == parameter }
 
         notify :warning, {
