@@ -19,16 +19,29 @@ gem 'puppet-lint-param-docs'
 
 This plugin provides a new check to `puppet-lint`.
 
-### parameter_documentation
+### parameter\_documentation
 
 **--fix support: No**
 
 This check will raise a warning for any class or defined type parameters that
-don't have an RDoc description.
+don't have a description.
 
 ```
 WARNING: missing documentation for class parameter foo::bar
 WARNING: missing documentation for defined type parameter foo::baz
+```
+
+It will also raise warnings for parameters documented more than once.
+
+```
+WARNING Duplicate class parameter documentation for foo::bar on line 5
+WARNING Duplicate class parameter documentation for foo::bar on line 6
+```
+
+A warning will also be raised if you document a parameter that doesn't exist in the class or defined type.
+
+```
+WARNING No matching class parameter for documentation of foo::bar
 ```
 
 ### Documentation styles
@@ -39,36 +52,42 @@ The check will accept any of the following styles:
 
 Used by [Puppet Strings](https://github.com/puppetlabs/puppetlabs-strings).
 
-    # Example class
-    #
-    # @param foo example
-    define example($foo) { }
+```puppet
+# @summary Example class
+#
+# @param foo example
+define example($foo) { }
+```
 
 #### Puppet Doc style
 
-Used by the [puppet-doc](https://docs.puppetlabs.com/puppet/latest/reference/man/doc.html)
-command, generally deprecated in favour of Puppet Strings.
+Used by the [puppet-doc](https://puppet.com/docs/puppet/6.18/man/doc.html)
+command, deprecated in favour of Puppet Strings.
 
-    # Example class
-    #
-    # === Parameters:
-    #
-    # [*foo*] example
-    #
-    class example($foo) { }
+```puppet
+# Example class
+#
+# === Parameters:
+#
+# [*foo*] example
+#
+class example($foo) { }
+```
 
 #### Kafo rdoc style
 
 Used in [kafo](https://github.com/theforeman/kafo#documentation) following an
 rdoc style.
 
-    # Example class
-    #
-    # === Parameters:
-    #
-    # $foo:: example
-    #
-    class example($foo) { }
+```puppet
+# Example class
+#
+# === Parameters:
+#
+# $foo:: example
+#
+class example($foo) { }
+```
 
 ### Selective rake task
 
@@ -83,7 +102,7 @@ helper to customise the lint rake task:
       config.pattern = ['manifests/init.pp', 'manifests/other/**/*.pp']
     end
 
-This would disable the parameter_documentation check by default, but then
+This would disable the parameter\_documentation check by default, but then
 defines a new rake task (which runs after `lint`) specifically for the files
 given in `config.pattern`.
 
