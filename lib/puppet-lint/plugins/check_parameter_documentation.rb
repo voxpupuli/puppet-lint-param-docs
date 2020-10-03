@@ -29,7 +29,7 @@ PuppetLint.new_check(:parameter_documentation) do
       doc_params_duplicates.each do |parameter, tokens|
         tokens.each do |token|
            notify :warning, {
-             :message => "Duplicate #{type_str(idx)} parameter documentation for #{parameter}",
+             :message => "Duplicate #{type_str(idx)} parameter documentation for #{idx[:name_token].value}::#{parameter}",
              :line    => token.line,
              :column  => token.column + token.value.match(/\A\s*(@param\s*)?/)[0].length + 1 # `+ 1` is to account for length of the `#` COMMENT token.
            }
@@ -41,7 +41,7 @@ PuppetLint.new_check(:parameter_documentation) do
         next if params.find { |p| p.value == parameter }
 
         notify :warning, {
-          :message => "No matching #{type_str(idx)} parameter for documentation of #{parameter}",
+          :message => "No matching #{type_str(idx)} parameter for documentation of #{idx[:name_token].value}::#{parameter}",
           :line    => token.line,
           :column  => token.column + token.value.match(/\A\s*(@param\s*)?/)[0].length + 1
         }

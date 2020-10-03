@@ -545,9 +545,13 @@ define foreman (
     end
   end
 
-  context 'class with parameters documented twice (@param)' do
-    let(:code) do
-      <<-EOS.gsub(/^\s+/, '')
+  describe 'Duplicated documentation' do
+    let(:class_msg) { 'Duplicate class parameter documentation for example::%s' }
+    let(:define_msg) { 'Duplicate defined type parameter documentation for example::%s' }
+
+    context 'class with parameters documented twice (@param)' do
+      let(:code) do
+        <<-EOS.gsub(/^\s+/, '')
       # @summary Example class
       #
       # @param bar
@@ -556,25 +560,52 @@ define foreman (
       # @param bar Duplicate/conflicting docs
       #
       class example($foo, $bar) { }
-    EOS
+        EOS
+      end
+
+      it 'should detect two problems' do
+        expect(problems).to have(2).problem
+      end
+
+      it 'should create a warning on line 3' do
+        expect(problems).to contain_warning(class_msg % :bar).on_line(3).in_column(10)
+      end
+
+      it 'should create a warning on line 6' do
+        expect(problems).to contain_warning(class_msg % :bar).on_line(6).in_column(10)
+      end
     end
 
-    it 'should detect two problems' do
-      expect(problems).to have(2).problem
+    context 'define with parameters documented twice (@param)' do
+      let(:code) do
+        <<-EOS.gsub(/^\s+/, '')
+      # @summary Example define
+      #
+      # @param bar
+      #   example
+      # @param foo example
+      # @param bar Duplicate/conflicting docs
+      #
+      define example($foo, $bar) { }
+        EOS
+      end
+
+      it 'should detect two problems' do
+        expect(problems).to have(2).problem
+      end
+
+      it 'should create a warning on line 3' do
+        expect(problems).to contain_warning(define_msg % :bar).on_line(3).in_column(10)
+      end
+
+      it 'should create a warning on line 6' do
+        expect(problems).to contain_warning(define_msg % :bar).on_line(6).in_column(10)
+      end
     end
 
-    it 'should create a warning on line 3' do
-      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(3).in_column(10)
-    end
-
-    it 'should create a warning on line 6' do
-      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(6).in_column(10)
-    end
-  end
-
-  context 'class with parameters documented 3 times (@param)' do
-    let(:code) do
-      <<-EOS.gsub(/^\s+/, '')
+    context 'class with parameters documented 3 times (@param)' do
+      let(:code) do
+        <<-EOS.gsub(/^\s+/, '')
       # @summary Example class
       #
       # @param bar
@@ -586,29 +617,29 @@ define foreman (
       #   example
       #
       class example($foo, $bar) { }
-    EOS
+        EOS
+      end
+
+      it 'should detect three problems' do
+        expect(problems).to have(3).problem
+      end
+
+      it 'should create a warning on line 3' do
+        expect(problems).to contain_warning(class_msg % :bar).on_line(3).in_column(10)
+      end
+
+      it 'should create a warning on line 6' do
+        expect(problems).to contain_warning(class_msg % :bar).on_line(6).in_column(10)
+      end
+
+      it 'should create a warning on line 8' do
+        expect(problems).to contain_warning(class_msg % :bar).on_line(8).in_column(10)
+      end
     end
 
-    it 'should detect three problems' do
-      expect(problems).to have(3).problem
-    end
-
-    it 'should create a warning on line 3' do
-      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(3).in_column(10)
-    end
-
-    it 'should create a warning on line 6' do
-      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(6).in_column(10)
-    end
-
-    it 'should create a warning on line 8' do
-      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(8).in_column(10)
-    end
-  end
-
-  context 'private class with parameters documented twice (@param)' do
-    let(:code) do
-      <<-EOS.gsub(/^\s+/, '')
+    context 'private class with parameters documented twice (@param)' do
+      let(:code) do
+        <<-EOS.gsub(/^\s+/, '')
       # @summary Example class
       #
       # @param bar docs
@@ -616,25 +647,25 @@ define foreman (
       #
       # @api private
       class example($bar) { }
-    EOS
+        EOS
+      end
+
+      it 'should detect two problems' do
+        expect(problems).to have(2).problem
+      end
+
+      it 'should create a warning on line 3' do
+        expect(problems).to contain_warning(class_msg % :bar).on_line(3).in_column(10)
+      end
+
+      it 'should create a warning on line 4' do
+        expect(problems).to contain_warning(class_msg % :bar).on_line(4).in_column(10)
+      end
     end
 
-    it 'should detect two problems' do
-      expect(problems).to have(2).problem
-    end
-
-    it 'should create a warning on line 3' do
-      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(3).in_column(10)
-    end
-
-    it 'should create a warning on line 4' do
-      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(4).in_column(10)
-    end
-  end
-
-  context 'class with parameters documented twice ([*bar*])' do
-    let(:code) do
-      <<-EOS.gsub(/^\s+/, '')
+    context 'class with parameters documented twice ([*bar*])' do
+      let(:code) do
+        <<-EOS.gsub(/^\s+/, '')
       # @summary Example class
       #
       # @param bar
@@ -643,19 +674,20 @@ define foreman (
       # [*bar*] Duplicate/conflicting docs
       #
       class example($foo, $bar) { }
-    EOS
-    end
+        EOS
+      end
 
-    it 'should detect two problems' do
-      expect(problems).to have(2).problem
-    end
+      it 'should detect two problems' do
+        expect(problems).to have(2).problem
+      end
 
-    it 'should create a warning on line 3' do
-      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(3).in_column(10)
-    end
+      it 'should create a warning on line 3' do
+        expect(problems).to contain_warning(class_msg % :bar).on_line(3).in_column(10)
+      end
 
-    it 'should create a warning on line 6' do
-      expect(problems).to contain_warning('Duplicate class parameter documentation for bar').on_line(6).in_column(3)
+      it 'should create a warning on line 6' do
+        expect(problems).to contain_warning(class_msg % :bar).on_line(6).in_column(3)
+      end
     end
   end
 
@@ -666,7 +698,7 @@ define foreman (
       #
       # @param foo
       class example { }
-    EOS
+      EOS
     end
 
     it 'should detect a single problem' do
@@ -674,7 +706,7 @@ define foreman (
     end
 
     it 'should create a warning on line 3' do
-      expect(problems).to contain_warning('No matching class parameter for documentation of foo').on_line(3).in_column(10)
+      expect(problems).to contain_warning('No matching class parameter for documentation of example::foo').on_line(3).in_column(10)
     end
   end
 
@@ -688,7 +720,7 @@ define foreman (
       #
       # @api private
       class example { }
-    EOS
+      EOS
     end
 
     it 'should detect a single problem' do
@@ -696,7 +728,7 @@ define foreman (
     end
 
     it 'should create a warning on line 3' do
-      expect(problems).to contain_warning('No matching class parameter for documentation of foo').on_line(3).in_column(10)
+      expect(problems).to contain_warning('No matching class parameter for documentation of example::foo').on_line(3).in_column(10)
     end
   end
 
@@ -711,7 +743,7 @@ define foreman (
       #
       # @api private
       define example::example(String[1] $bar) { }
-    EOS
+      EOS
     end
 
     it 'should detect a single problem' do
@@ -719,7 +751,7 @@ define foreman (
     end
 
     it 'should create a warning on line 4' do
-      expect(problems).to contain_warning('No matching defined type parameter for documentation of foo').on_line(4).in_column(10)
+      expect(problems).to contain_warning('No matching defined type parameter for documentation of example::example::foo').on_line(4).in_column(10)
     end
   end
 end
