@@ -754,4 +754,105 @@ define foreman (
       expect(problems).to contain_warning('No matching defined type parameter for documentation of example::example::foo').on_line(4).in_column(10)
     end
   end
+
+  context 'define with documentation for parameter `name`' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example define
+      #
+      # @param name
+      #   Docs for the $name
+      # @param bar Docs for bar
+      define example::example(String[1] $bar) { }
+    EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
+  context 'class with documentation for parameter `name`' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example class
+      #
+      # @param name
+      #   Invalid docs
+      class example { }
+    EOS
+    end
+
+    it 'should detect a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'should create a warning on line 3' do
+      expect(problems).to contain_warning('No matching class parameter for documentation of example::name').on_line(3).in_column(10)
+    end
+  end
+
+  context 'define with documentation for parameter `title`' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example define
+      #
+      # @param title
+      #   Docs for the $title
+      # @param bar Docs for bar
+      define example::example(String[1] $bar) { }
+    EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
+
+  context 'class with documentation for parameter `title`' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example class
+      #
+      # @param title
+      #   Invalid docs
+      class example { }
+    EOS
+    end
+
+    it 'should detect a single problem' do
+      expect(problems).to have(1).problem
+    end
+
+    it 'should create a warning on line 3' do
+      expect(problems).to contain_warning('No matching class parameter for documentation of example::title').on_line(3).in_column(10)
+    end
+  end
+
+  context 'define with documentation for both `title` and `name`' do
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary Example define
+      #
+      # @param title
+      #   Docs for the $title
+      # @param name
+      #   Docs for the $name
+      # @param bar Docs for bar
+      define example(String[1] $bar) { }
+    EOS
+    end
+
+    it 'should detect two problems' do
+      expect(problems).to have(2).problems
+    end
+
+    it 'should create a warning on line 3' do
+      expect(problems).to contain_warning('Duplicate defined type parameter documentation for example::name/title').on_line(3).in_column(10)
+    end
+
+    it 'should create a warning on line 5' do
+      expect(problems).to contain_warning('Duplicate defined type parameter documentation for example::name/title').on_line(5).in_column(10)
+    end
+  end
 end
