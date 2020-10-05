@@ -1,5 +1,23 @@
 # Changelog
 
+## [v1.6.0](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.6.0) (2020-10-05)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.5.1...v1.6.0)
+
+**Implemented enhancements:**
+
+- Warn if parameters that don't exist are documented [\#20](https://github.com/voxpupuli/puppet-lint-param-docs/pull/20) ([alexjfisher](https://github.com/alexjfisher))
+- Warn if a parameter is documented more than once and remove support for multi-line \(`/\* \*/`\) comments [\#19](https://github.com/voxpupuli/puppet-lint-param-docs/pull/19) ([alexjfisher](https://github.com/alexjfisher))
+
+**Fixed bugs:**
+
+- Don't warn if name/title are documented in defines [\#22](https://github.com/voxpupuli/puppet-lint-param-docs/pull/22) ([alexjfisher](https://github.com/alexjfisher))
+
+**Merged pull requests:**
+
+- Use absolute parameter name in warnings [\#23](https://github.com/voxpupuli/puppet-lint-param-docs/pull/23) ([alexjfisher](https://github.com/alexjfisher))
+- Only release on Ruby 2.6 Travis workers [\#15](https://github.com/voxpupuli/puppet-lint-param-docs/pull/15) ([ekohl](https://github.com/ekohl))
+
 ## [v1.5.1](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.5.1) (2020-06-23)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.5.0...v1.5.1)
