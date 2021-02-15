@@ -89,6 +89,15 @@ rdoc style.
 class example($foo) { }
 ```
 
+### Private api
+
+The check will ignore missing documentation for private apis by default.
+To disable this behaviour and check private apis, use the following configuration:
+
+```ruby
+PuppetLint.configuration.docs_check_private_params = true
+```
+
 ### Selective rake task
 
 The usual puppet-lint rake task checks all manifests, which isn't always

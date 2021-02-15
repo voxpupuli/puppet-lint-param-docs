@@ -173,13 +173,34 @@ define foreman (
       EOS
     end
 
-    it 'should detect no single problems' do
-      expect(problems).to have(0).problems
+    context 'check private api disabled (default)' do
+      it 'should detect no single problems' do
+        expect(problems).to have(0).problems
+      end
+
+      it 'should not create a warning' do
+        expect(problems).not_to contain_info(class_msg % :foo)
+      end
     end
 
-    it 'should not create a warning' do
-      expect(problems).not_to contain_info(class_msg % :foo)
+    context 'check private api enabled' do
+      before do
+        PuppetLint.configuration.docs_check_private_params = true
+      end
+
+      after do
+        PuppetLint.configuration.docs_check_private_params = false
+      end
+
+      it 'should detect a single problems' do
+        expect(problems).to have(1).problem
+      end
+
+      it 'should create a warning' do
+        expect(problems).to contain_warning(class_msg % :foo).on_line(6).in_column(15)
+      end
     end
+
   end
 
   context 'define missing documentation (@param bar) for a parameter' do
