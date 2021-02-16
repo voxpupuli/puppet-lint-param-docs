@@ -1,5 +1,7 @@
 PuppetLint.new_check(:parameter_documentation) do
   def check
+    check_private = PuppetLint.configuration.docs_check_private_params || false
+
     class_indexes.concat(defined_type_indexes).each do |idx|
       doc_params = {}
       doc_params_duplicates = Hash.new { |hash, key| hash[key] = [doc_params[key]] }
@@ -50,7 +52,7 @@ PuppetLint.new_check(:parameter_documentation) do
         }
       end
 
-      unless is_private
+      unless is_private and not check_private
         params.each do |p|
           next if doc_params.has_key? p.value
           notify :warning, {
