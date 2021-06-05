@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.7.2](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.7.2) (2021-06-05)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.1...v1.7.2)
+
+Because of issues with the GitHub packages setup in the GitHub action, the 1.7.0 and 1.7.1 release didn't make it to GitHub packages. This should be fixed now. 1.7.0/1.7.1/1.7.2 contain the same code.
+
+**Fixed bugs:**
+
+- GitHub Actions: Set 0600 perms to gem credentials file [\#34](https://github.com/voxpupuli/puppet-lint-param-docs/pull/34) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v1.7.1](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.7.1) (2021-06-05)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.0...v1.7.1)
