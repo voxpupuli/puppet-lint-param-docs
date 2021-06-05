@@ -24,4 +24,4 @@ jobs:
         run: |
           echo ":github: Bearer ${{ secrets.GITHUB_TOKEN }}" >> ~/.gem/credentials
       - name: Publish gem to GitHub packages
-        run: gem push --key github --host https://rubygems.pkg.github.com/phanatic/github_api *.gemspec
+        run: gem push --key github --host https://rubygems.pkg.github.com/voxpupuli/puppet-lint-param-docs *.gem
