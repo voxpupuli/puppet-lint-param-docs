@@ -4,3 +4,4 @@
 pkg/
 .ruby-*
 /coverage/
+.vendor/
