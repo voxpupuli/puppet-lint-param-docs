@@ -1,27 +1,33 @@
 PuppetLint.new_check(:parameter_documentation) do
   def check
+    allowed_styles = PuppetLint.configuration.docs_allowed_styles || ['doc', 'kafo', 'strings']
+    allowed_styles = [ allowed_styles ].flatten
+
     class_indexes.concat(defined_type_indexes).each do |idx|
       doc_params = {}
+      doc_params_styles = {}
       doc_params_duplicates = Hash.new { |hash, key| hash[key] = [doc_params[key]] }
       is_private = false
       tokens[0..idx[:start]].reverse_each do |dtok|
         next if [:CLASS, :DEFINE, :NEWLINE, :WHITESPACE, :INDENT].include?(dtok.type)
         if dtok.type == :COMMENT
-          if dtok.value =~ /\A\s*\[\*([a-zA-Z0-9_]+)\*\]/ or
-             dtok.value =~ /\A\s*\$([a-zA-Z0-9_]+):: +/ or
-             dtok.value =~ /\A\s*@param (?:\[.+\] )?([a-zA-Z0-9_]+)(?: +|$)/
-            parameter = $1
-            parameter = 'name/title' if idx[:type] == :DEFINE && ['name','title'].include?(parameter)
-            if doc_params.include? parameter
-              doc_params_duplicates[parameter] << dtok
-            else
-              doc_params[parameter] = dtok
-            end
+          if dtok.value =~ /\A\s*@api +private\s*$/
+            is_private = true
+            next
           end
 
-          is_private = true if dtok.value =~ /\A\s*@api +private\s*$/
-        else
-          break
+          style = detect_style(dtok)
+          # not a doc parameter if style has not been detected
+          next if style[0].nil?
+
+          parameter = style[2]
+          parameter = 'name/title' if idx[:type] == :DEFINE && ['name','title'].include?(parameter)
+          if doc_params.include? parameter
+            doc_params_duplicates[parameter] << dtok
+          else
+            doc_params[parameter] = dtok
+            doc_params_styles[parameter] = style[0]
+          end
         end
       end
 
@@ -52,12 +58,22 @@ PuppetLint.new_check(:parameter_documentation) do
 
       unless is_private
         params.each do |p|
-          next if doc_params.has_key? p.value
-          notify :warning, {
-            :message => "missing documentation for #{type_str(idx)} parameter #{idx[:name_token].value}::#{p.value}",
-            :line    => p.line,
-            :column  => p.column,
-          }
+          if doc_params.has_key? p.value
+            style = doc_params_styles[p.value] || 'unknown'
+            unless allowed_styles.include?(style)
+              notify :warning, {
+                :message => "invalid documentation style for #{type_str(idx)} parameter #{idx[:name_token].value}::#{p.value} (#{doc_params_styles[p.value]})",
+                :line    => p.line,
+                :column  => p.column,
+              }
+            end
+          else
+            notify :warning, {
+              :message => "missing documentation for #{type_str(idx)} parameter #{idx[:name_token].value}::#{p.value}",
+              :line    => p.line,
+              :column  => p.column,
+            }
+          end
         end
       end
     end
@@ -96,5 +112,20 @@ PuppetLint.new_check(:parameter_documentation) do
     rescue StopIteration; end
 
     params
+  end
+
+  # returns an array [<detected_style>, <complete match>, <param name>, <same-line-docs>]
+  # [nil, nil] if this is not a parameter.
+  def detect_style(dtok)
+    style = nil
+    case dtok.value
+    when %r{\A\s*\[\*([a-zA-Z0-9_]+)\*\]\s*(.*)\z}
+      style = 'doc'
+    when %r{\A\s*\$([a-zA-Z0-9_]+):: +(.*)\z}
+      style = 'kafo'
+    when %r{\A\s*@param (?:\[.+\] )?([a-zA-Z0-9_]+)(?: +|$)(.*)\z}
+      style = 'strings'
+    end
+    [ style, * $~ ]
   end
 end

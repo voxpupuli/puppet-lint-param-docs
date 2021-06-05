@@ -3,6 +3,8 @@ require 'spec_helper'
 describe 'parameter_documentation' do
   let(:class_msg) { 'missing documentation for class parameter example::%s' }
   let(:define_msg) { 'missing documentation for defined type parameter example::%s' }
+  let(:class_style_msg) { 'invalid documentation style for class parameter example::%s (%s)' }
+  let(:define_style_msg) { 'invalid documentation style for defined type parameter example::%s (%s)' }
 
   context 'class missing any documentation' do
     let(:code) { 'class example($foo) { }' }
@@ -354,6 +356,62 @@ define foreman (
       expect(problems).to have(0).problems
     end
   end
+
+  context 'check style' do
+    let(:code) do
+      <<-EOS
+      # Example mixed style class
+      #
+      # Parameters:
+      #
+      # $foo:: example
+      #
+      # [*bar*] example
+      #
+      # @param foobar example
+      #
+      class example($foo, $bar, $foobar) { }
+      EOS
+    end
+
+    context 'detect all styles' do
+      before do
+        PuppetLint.configuration.docs_allowed_styles = ['noexist']
+      end
+      after do
+        PuppetLint.configuration.docs_allowed_styles = false
+      end
+
+      it 'should detect three problems' do
+        expect(problems).to have(3).problems
+      end
+
+      it 'should create three problems' do
+        expect(problems).to contain_warning(class_style_msg % [:foo, 'kafo']).on_line(11).in_column(21)
+        expect(problems).to contain_warning(class_style_msg % [:bar, 'doc']).on_line(11).in_column(27)
+        expect(problems).to contain_warning(class_style_msg % [:foobar, 'strings']).on_line(11).in_column(33)
+      end
+    end
+
+    context 'use configured style' do
+      before do
+        PuppetLint.configuration.docs_allowed_styles = 'strings'
+      end
+      after do
+        PuppetLint.configuration.docs_allowed_styles = nil
+      end
+
+      it 'should detect two problems' do
+        expect(problems).to have(2).problems
+      end
+
+      it 'should create three problems' do
+        expect(problems).to contain_warning(class_style_msg % [:foo, 'kafo']).on_line(11).in_column(21)
+        expect(problems).to contain_warning(class_style_msg % [:bar, 'doc']).on_line(11).in_column(27)
+      end
+    end
+  end
+
 
   context 'define with all parameters documented ($foo::)' do
     let(:code) do

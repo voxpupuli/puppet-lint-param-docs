@@ -46,9 +46,25 @@ WARNING No matching class parameter for documentation of foo::bar
 
 ### Documentation styles
 
+By default, the check will allow all known documentation styles.
+You can, however, specify a list of accepted formats:
+
+```ruby
+# Limit to a single style
+PuppetLint.configuration.docs_allowed_styles = 'strings'
+# Limit to multiple styles
+PuppetLint.configuration.docs_allowed_styles = ['strings', 'doc']
+```
+
+It will raise a warning if the documentation style does not match.
+
+```
+WARNING: invalid documentation style for class parameter foo::bar (doc) on line 4
+```
+
 The check will accept any of the following styles:
 
-#### Puppet Strings
+#### Puppet Strings: `strings`
 
 Used by [Puppet Strings](https://github.com/puppetlabs/puppetlabs-strings).
 
@@ -59,7 +75,7 @@ Used by [Puppet Strings](https://github.com/puppetlabs/puppetlabs-strings).
 define example($foo) { }
 ```
 
-#### Puppet Doc style
+#### Puppet Doc style: `doc`
 
 Used by the [puppet-doc](https://puppet.com/docs/puppet/6.18/man/doc.html)
 command, deprecated in favour of Puppet Strings.
@@ -74,7 +90,7 @@ command, deprecated in favour of Puppet Strings.
 class example($foo) { }
 ```
 
-#### Kafo rdoc style
+#### Kafo rdoc style: `kafo`
 
 Used in [kafo](https://github.com/theforeman/kafo#documentation) following an
 rdoc style.
