@@ -1,5 +1,22 @@
 # Changelog
 
+## [v1.7.0](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.7.0) (2021-06-05)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.6.0...v1.7.0)
+
+**Implemented enhancements:**
+
+- Detect faulty documentation style [\#29](https://github.com/voxpupuli/puppet-lint-param-docs/pull/29) ([vStone](https://github.com/vStone))
+
+**Closed issues:**
+
+- Error if old puppet-doc format is found [\#24](https://github.com/voxpupuli/puppet-lint-param-docs/issues/24)
+
+**Merged pull requests:**
+
+- Publish gem to GitHub and rubygems [\#31](https://github.com/voxpupuli/puppet-lint-param-docs/pull/31) ([bastelfreak](https://github.com/bastelfreak))
+- Convert to Github Actions [\#27](https://github.com/voxpupuli/puppet-lint-param-docs/pull/27) ([ekohl](https://github.com/ekohl))
+
 ## [v1.6.0](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.6.0) (2020-10-05)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.5.1...v1.6.0)
@@ -7,7 +24,7 @@
 **Implemented enhancements:**
 
 - Warn if parameters that don't exist are documented [\#20](https://github.com/voxpupuli/puppet-lint-param-docs/pull/20) ([alexjfisher](https://github.com/alexjfisher))
-- Warn if a parameter is documented more than once and remove support for multi-line \(`/\* \*/`\) comments [\#19](https://github.com/voxpupuli/puppet-lint-param-docs/pull/19) ([alexjfisher](https://github.com/alexjfisher))
+- Warn if a parameter is documented more than once and remove support for multi-line \(`/* */`\) comments [\#19](https://github.com/voxpupuli/puppet-lint-param-docs/pull/19) ([alexjfisher](https://github.com/alexjfisher))
 
 **Fixed bugs:**
 
