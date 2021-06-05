@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.7.1](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.7.1) (2021-06-05)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.0...v1.7.1)
+
+**Closed issues:**
+
+- Release 1.7.1 because 1.7.0 didn't make it to GitHub Packages [\#33](https://github.com/voxpupuli/puppet-lint-param-docs/issues/33)
+
 ## [v1.7.0](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.7.0) (2021-06-05)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.6.0...v1.7.0)
