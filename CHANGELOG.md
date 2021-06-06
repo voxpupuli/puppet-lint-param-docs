@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.7.4](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.7.4) (2021-06-06)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.3...v1.7.4)
+
+Because of issues with the GitHub packages setup in the GitHub action, the 1.7.0, 1.7.1, 1.7.2 and 1.7.3 release didn't make it to GitHub packages. This should be fixed now. 1.7.0/1.7.1/1.7.2/1.7.3/1.7.3 contain the same code.
+
+**Fixed bugs:**
+
+- GitHub Actions: Fix pushing the gem to GitHub [\#37](https://github.com/voxpupuli/puppet-lint-param-docs/pull/37) ([smortex](https://github.com/smortex))
+
 ## [v1.7.3](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.7.3) (2021-06-05)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.2...v1.7.3)
