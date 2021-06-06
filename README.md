@@ -1,5 +1,11 @@
 # puppet-lint parameter documentation check
 
+[![Test](https://github.com/voxpupuli/puppet-lint-param-docs/actions/workflows/test.yml/badge.svg)](https://github.com/voxpupuli/puppet-lint-param-docs/actions/workflows/test.yml)
+[![Release](https://github.com/voxpupuli/puppet-lint-param-docs/actions/workflows/release.yml/badge.svg)](https://github.com/voxpupuli/puppet-lint-param-docs/actions/workflows/release.yml)
+[![RubyGem Version](https://img.shields.io/gem/v/puppet-lint-param-docs.svg)](https://rubygems.org/gems/puppet-lint-param-docs)
+[![RubyGem Downloads](https://img.shields.io/gem/dt/puppet-lint-param-docs.svg)](https://rubygems.org/gems/puppet-lint-param-docs)
+[![Donated by Dominic Cleal](https://img.shields.io/badge/donated%20by-Dominic%20Cleal-fb7047.svg)](#transfer-notice)
+
 Adds a new puppet-lint check to verify all class and defined type parameters
 have been documented.
 
@@ -13,6 +19,21 @@ base and run `bundle install`.
 
 ```ruby
 gem 'puppet-lint-param-docs'
+```
+
+This gem is not only available on rubygems, but also as [GitHub Package](https://github.com/voxpupuli/puppet-lint-param-docs/packages/)
+You can install it from GitHub like this:
+
+```
+$ gem install puppet-lint-param-docs --source "https://rubygems.pkg.github.com/voxpupuli"
+```
+
+Or in a Gemfile:
+
+```
+source "https://rubygems.pkg.github.com/voxpupuli" do
+  gem "puppet-lint-param-docs", "1.7.4"
+end
 ```
 
 ## Usage
@@ -124,3 +145,25 @@ given in `config.pattern`.
 
 The [Puppet Strings](#puppet_strings) `@api private` directive can also be used
 to disable checks on that file.
+
+## Transfer Notice
+
+This plugin was originally authored by [Dominic Cleal](https://github.com/domcleal).
+The maintainer preferred that Puppet Community take ownership of the module for future improvement and maintenance.
+Existing pull requests and issues were transferred over, please fork and continue to contribute here.
+
+Previously: https://github.com/domcleal/puppet-lint-absolute_classname-check
+
+## License
+
+This gem is licensed under the MIT release
+
+## Release information
+
+To make a new release, please do:
+* update the version in the gemspec file
+* Install gems with `bundle install --with release --path .vendor`
+* generate the changelog with `bundle exec rake changelog`
+* Check if the new version matches the closed issues/PRs in the changelog
+* Create a PR with it
+* After it got merged, push a tag. GitHub actions will do the actual release to rubygems and GitHub Packages
