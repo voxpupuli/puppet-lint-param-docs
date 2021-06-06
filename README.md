@@ -1,5 +1,6 @@
 # puppet-lint parameter documentation check
 
+[![License](https://img.shields.io/github/license/voxpupuli/puppet-lint-trailing_comma-check.svg)](https://github.com/voxpupuli/puppet-lint-trailing_comma-check/blob/master/LICENSE)
 [![Test](https://github.com/voxpupuli/puppet-lint-param-docs/actions/workflows/test.yml/badge.svg)](https://github.com/voxpupuli/puppet-lint-param-docs/actions/workflows/test.yml)
 [![Release](https://github.com/voxpupuli/puppet-lint-param-docs/actions/workflows/release.yml/badge.svg)](https://github.com/voxpupuli/puppet-lint-param-docs/actions/workflows/release.yml)
 [![RubyGem Version](https://img.shields.io/gem/v/puppet-lint-param-docs.svg)](https://rubygems.org/gems/puppet-lint-param-docs)
