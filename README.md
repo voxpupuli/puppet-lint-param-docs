@@ -157,7 +157,7 @@ Previously: https://github.com/domcleal/puppet-lint-absolute_classname-check
 
 ## License
 
-This gem is licensed under the MIT release
+This gem is licensed under the MIT license.
 
 ## Release information
 
