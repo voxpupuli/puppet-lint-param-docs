@@ -15,6 +15,21 @@ base and run `bundle install`.
 gem 'puppet-lint-param-docs'
 ```
 
+This gem is not only available on rubygems, but also as [GitHub Package](https://github.com/voxpupuli/puppet-lint-param-docs/packages/)
+You can install it from GitHub like this:
+
+```
+$ gem install puppet-lint-param-docs --source "https://rubygems.pkg.github.com/voxpupuli"
+```
+
+Or in a Gemfile:
+
+```
+source "https://rubygems.pkg.github.com/voxpupuli" do
+  gem "puppet-lint-param-docs", "1.7.4"
+end
+```
+
 ## Usage
 
 This plugin provides a new check to `puppet-lint`.
