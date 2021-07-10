@@ -1,5 +1,20 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
+
+## [1.7.5](https://github.com/voxpupuli/puppet-lint-param-docs/tree/1.7.5) (2021-07-10)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.4...1.7.5)
+
+**Fixed bugs:**
+
+- Ignore variables in array defaults [\#44](https://github.com/voxpupuli/puppet-lint-param-docs/pull/44) ([alexjfisher](https://github.com/alexjfisher))
+
+**Merged pull requests:**
+
+- Add License badge [\#40](https://github.com/voxpupuli/puppet-lint-param-docs/pull/40) ([bastelfreak](https://github.com/bastelfreak))
+- Document GitHub Packages in README.md and add badges [\#39](https://github.com/voxpupuli/puppet-lint-param-docs/pull/39) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v1.7.4](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.7.4) (2021-06-06)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.3...v1.7.4)
