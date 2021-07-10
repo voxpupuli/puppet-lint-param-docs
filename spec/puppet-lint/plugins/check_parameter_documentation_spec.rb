@@ -913,4 +913,46 @@ define foreman (
       expect(problems).to contain_warning('Duplicate defined type parameter documentation for example::name/title').on_line(5).in_column(10)
     end
   end
+
+  context 'class with array defaults containing variables' do
+    # Example taken from https://github.com/voxpupuli/puppet-lint-param-docs/issues/30
+    let(:code) do
+      <<-EOS.gsub(/^\s+/, '')
+      # @summary example class
+      #
+      # @param parameter_1
+      # @param parameter_2
+      # @param parameter_3
+      # @param parameter_4
+      # @param parameter_5
+      # @param parameter_6
+      # @param parameter_7
+      # @param parameter_8
+      #
+      class example (
+        Array $parameter_1 = $variable1,
+        Array $parameter_2 = [ $variable2, ],
+        Array $parameter_3 = [ $variable3, 'string1', ],
+        Array $parameter_4 = [
+          $variable4,
+          'string1',
+        ],
+        Array $parameter_5 = [ $variable5, $variable6, 'string1', ],
+        Array $parameter_6 = [ $variable7, 'string1', $variable8, ],
+        Array $parameter_7 = [ 'string1', $variable9, ],
+        Array $parameter_8 = [
+          'string1',
+          $variable10,
+          'string2',
+        ],
+      ) {
+        # foo
+      }
+      EOS
+    end
+
+    it 'should not detect any problems' do
+      expect(problems).to have(0).problems
+    end
+  end
 end
