@@ -1,8 +1,11 @@
-if ENV['COVERAGE'] == 'yes'
+# frozen_string_literal: true
+
+begin
   require 'simplecov'
   require 'simplecov-console'
   require 'codecov'
-
+rescue LoadError
+else
   SimpleCov.start do
     track_files 'lib/**/*.rb'
 
