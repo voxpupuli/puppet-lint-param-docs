@@ -970,6 +970,10 @@ define foreman (
       # @param parameter_6
       # @param parameter_7
       # @param parameter_8
+      # @param parameter_9
+      # @param parameter_10
+      # @param parameter_11
+      # @param parameter_12
       #
       class example (
         Hash $parameter_1 = $variable1,
@@ -987,6 +991,10 @@ define foreman (
           $variable10,
           'string2',
         },
+        Hash $parameter_9 = [ { 'string1', $variable11, } ],
+        Hash $parameter_10 = [ { 'string1', $variable12, }, { 'string1', $variable13, } ],
+        Hash $parameter_11 = { [ 'string1', $variable14, ] },
+        Hash $parameter_12 = [ 'string1' => $variable15, 'string2' => $variable16, ],
       ) {
         # foo
       }
@@ -994,6 +1002,7 @@ define foreman (
     end
 
     it 'should not detect any problems' do
+      puts problems
       expect(problems).to have(0).problems
     end
   end
