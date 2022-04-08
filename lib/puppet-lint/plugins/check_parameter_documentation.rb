@@ -99,9 +99,9 @@ PuppetLint.new_check(:parameter_documentation) do
           while true
             ptok = e.next
             case ptok.type
-            when :LPAREN, :LBRACK
+            when :LPAREN, :LBRACK, :LBRACE
               nesting += 1
-            when :RPAREN, :RBRACK
+            when :RPAREN, :RBRACK, :RBRACE
               nesting -= 1
             when :COMMA
               break unless nesting > 0
