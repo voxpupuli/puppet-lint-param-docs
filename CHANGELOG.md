@@ -2,9 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.7.5](https://github.com/voxpupuli/puppet-lint-param-docs/tree/1.7.5) (2021-07-10)
+## [1.7.6](https://github.com/voxpupuli/puppet-lint-param-docs/tree/1.7.6) (2022-11-29)
 
-[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.4...1.7.5)
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.5...1.7.6)
+
+**Fixed bugs:**
+
+- Ignore variables in hash defaults [\#50](https://github.com/voxpupuli/puppet-lint-param-docs/pull/50) ([jvdmr](https://github.com/jvdmr))
+
+**Merged pull requests:**
+
+- Allow puppet-lint 3.x [\#52](https://github.com/voxpupuli/puppet-lint-param-docs/pull/52) ([bastelfreak](https://github.com/bastelfreak))
+- Add Ruby 3.1 to CI [\#51](https://github.com/voxpupuli/puppet-lint-param-docs/pull/51) ([bastelfreak](https://github.com/bastelfreak))
+
+## [v1.7.5](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v1.7.5) (2021-07-10)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.4...v1.7.5)
 
 **Fixed bugs:**
 
