@@ -1,7 +1,7 @@
 PuppetLint.new_check(:parameter_documentation) do
   def check
-    allowed_styles = PuppetLint.configuration.docs_allowed_styles || ['doc', 'kafo', 'strings']
-    allowed_styles = [ allowed_styles ].flatten
+    allowed_styles = PuppetLint.configuration.docs_allowed_styles || %w[doc kafo strings]
+    allowed_styles = [allowed_styles].flatten
 
     class_indexes.concat(defined_type_indexes).each do |idx|
       doc_params = {}
@@ -9,25 +9,26 @@ PuppetLint.new_check(:parameter_documentation) do
       doc_params_duplicates = Hash.new { |hash, key| hash[key] = [doc_params[key]] }
       is_private = false
       tokens[0..idx[:start]].reverse_each do |dtok|
-        next if [:CLASS, :DEFINE, :NEWLINE, :WHITESPACE, :INDENT].include?(dtok.type)
-        if dtok.type == :COMMENT
-          if dtok.value =~ /\A\s*@api +private\s*$/
-            is_private = true
-            next
-          end
+        next if %i[CLASS DEFINE NEWLINE WHITESPACE INDENT].include?(dtok.type)
 
-          style = detect_style(dtok)
-          # not a doc parameter if style has not been detected
-          next if style[0].nil?
+        next unless dtok.type == :COMMENT
 
-          parameter = style[2]
-          parameter = 'name/title' if idx[:type] == :DEFINE && ['name','title'].include?(parameter)
-          if doc_params.include? parameter
-            doc_params_duplicates[parameter] << dtok
-          else
-            doc_params[parameter] = dtok
-            doc_params_styles[parameter] = style[0]
-          end
+        if /\A\s*@api +private\s*$/.match?(dtok.value)
+          is_private = true
+          next
+        end
+
+        style = detect_style(dtok)
+        # not a doc parameter if style has not been detected
+        next if style[0].nil?
+
+        parameter = style[2]
+        parameter = 'name/title' if idx[:type] == :DEFINE && %w[name title].include?(parameter)
+        if doc_params.include? parameter
+          doc_params_duplicates[parameter] << dtok
+        else
+          doc_params[parameter] = dtok
+          doc_params_styles[parameter] = style[0]
         end
       end
 
@@ -36,11 +37,11 @@ PuppetLint.new_check(:parameter_documentation) do
       # warn about duplicates
       doc_params_duplicates.each do |parameter, tokens|
         tokens.each do |token|
-           notify :warning, {
-             :message => "Duplicate #{type_str(idx)} parameter documentation for #{idx[:name_token].value}::#{parameter}",
-             :line    => token.line,
-             :column  => token.column + token.value.match(/\A\s*(@param\s*)?/)[0].length + 1 # `+ 1` is to account for length of the `#` COMMENT token.
-           }
+          notify :warning, {
+            message: "Duplicate #{type_str(idx)} parameter documentation for #{idx[:name_token].value}::#{parameter}",
+            line: token.line,
+            column: token.column + token.value.match(/\A\s*(@param\s*)?/)[0].length + 1, # `+ 1` is to account for length of the `#` COMMENT token.
+          }
         end
       end
 
@@ -50,30 +51,30 @@ PuppetLint.new_check(:parameter_documentation) do
         next if params.find { |p| p.value == parameter }
 
         notify :warning, {
-          :message => "No matching #{type_str(idx)} parameter for documentation of #{idx[:name_token].value}::#{parameter}",
-          :line    => token.line,
-          :column  => token.column + token.value.match(/\A\s*(@param\s*)?/)[0].length + 1
+          message: "No matching #{type_str(idx)} parameter for documentation of #{idx[:name_token].value}::#{parameter}",
+          line: token.line,
+          column: token.column + token.value.match(/\A\s*(@param\s*)?/)[0].length + 1,
         }
       end
 
-      unless is_private
-        params.each do |p|
-          if doc_params.has_key? p.value
-            style = doc_params_styles[p.value] || 'unknown'
-            unless allowed_styles.include?(style)
-              notify :warning, {
-                :message => "invalid documentation style for #{type_str(idx)} parameter #{idx[:name_token].value}::#{p.value} (#{doc_params_styles[p.value]})",
-                :line    => p.line,
-                :column  => p.column,
-              }
-            end
-          else
+      next if is_private
+
+      params.each do |p|
+        if doc_params.has_key? p.value
+          style = doc_params_styles[p.value] || 'unknown'
+          unless allowed_styles.include?(style)
             notify :warning, {
-              :message => "missing documentation for #{type_str(idx)} parameter #{idx[:name_token].value}::#{p.value}",
-              :line    => p.line,
-              :column  => p.column,
+              message: "invalid documentation style for #{type_str(idx)} parameter #{idx[:name_token].value}::#{p.value} (#{doc_params_styles[p.value]})",
+              line: p.line,
+              column: p.column,
             }
           end
+        else
+          notify :warning, {
+            message: "missing documentation for #{type_str(idx)} parameter #{idx[:name_token].value}::#{p.value}",
+            line: p.line,
+            column: p.column,
+          }
         end
       end
     end
@@ -82,7 +83,7 @@ PuppetLint.new_check(:parameter_documentation) do
   private
 
   def type_str(idx)
-    idx[:type] == :CLASS ? "class" : "defined type"
+    idx[:type] == :CLASS ? 'class' : 'defined type'
   end
 
   def extract_params(idx)
@@ -92,20 +93,20 @@ PuppetLint.new_check(:parameter_documentation) do
     e = idx[:param_tokens].each
     begin
       while (ptok = e.next)
-        if ptok.type == :VARIABLE
-          params << ptok
-          nesting = 0
-          # skip to the next parameter to avoid finding default values of variables
-          while true
-            ptok = e.next
-            case ptok.type
-            when :LPAREN, :LBRACK, :LBRACE
-              nesting += 1
-            when :RPAREN, :RBRACK, :RBRACE
-              nesting -= 1
-            when :COMMA
-              break unless nesting > 0
-            end
+        next unless ptok.type == :VARIABLE
+
+        params << ptok
+        nesting = 0
+        # skip to the next parameter to avoid finding default values of variables
+        while true
+          ptok = e.next
+          case ptok.type
+          when :LPAREN, :LBRACK, :LBRACE
+            nesting += 1
+          when :RPAREN, :RBRACK, :RBRACE
+            nesting -= 1
+          when :COMMA
+            break unless nesting > 0
           end
         end
       end
@@ -119,13 +120,13 @@ PuppetLint.new_check(:parameter_documentation) do
   def detect_style(dtok)
     style = nil
     case dtok.value
-    when %r{\A\s*\[\*([a-zA-Z0-9_]+)\*\]\s*(.*)\z}
+    when /\A\s*\[\*([a-zA-Z0-9_]+)\*\]\s*(.*)\z/
       style = 'doc'
-    when %r{\A\s*\$([a-zA-Z0-9_]+):: +(.*)\z}
+    when /\A\s*\$([a-zA-Z0-9_]+):: +(.*)\z/
       style = 'kafo'
-    when %r{\A\s*@param (?:\[.+\] )?([a-zA-Z0-9_]+)(?: +|$)(.*)\z}
+    when /\A\s*@param (?:\[.+\] )?([a-zA-Z0-9_]+)(?: +|$)(.*)\z/
       style = 'strings'
     end
-    [ style, * $~ ]
+    [style, * $~]
   end
 end
