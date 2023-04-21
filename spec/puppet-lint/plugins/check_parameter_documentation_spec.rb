@@ -9,11 +9,11 @@ describe 'parameter_documentation' do
   context 'class missing any documentation' do
     let(:code) { 'class example($foo) { }' }
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(class_msg % :foo).on_line(1).in_column(15)
     end
   end
@@ -21,23 +21,23 @@ describe 'parameter_documentation' do
   context 'define missing any documentation' do
     let(:code) { 'define example($foo) { }' }
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
-      expect(problems).to contain_warning(define_msg% :foo).on_line(1).in_column(16)
+    it 'creates a warning' do
+      expect(problems).to contain_warning(define_msg % :foo).on_line(1).in_column(16)
     end
   end
 
   context 'class with param defaults' do
     let(:code) { 'class example($foo = $example::params::foo) { }' }
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(class_msg % :foo).on_line(1).in_column(15)
     end
   end
@@ -45,11 +45,11 @@ describe 'parameter_documentation' do
   context 'define with param defaults' do
     let(:code) { 'define example($foo = $example::params::foo) { }' }
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(define_msg % :foo).on_line(1).in_column(16)
     end
   end
@@ -57,45 +57,45 @@ describe 'parameter_documentation' do
   context 'define with param defaults using a function' do
     let(:code) { 'define example($foo = min(8, $facts["processors"]["count"])) { }' }
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(define_msg % :foo).on_line(1).in_column(16)
     end
   end
 
   context 'class with many param defaults' do
     let(:code) do
-      <<-EOS
-class foreman (
-  $foreman_url            = $foreman::params::foreman_url,
-  $unattended             = $foreman::params::unattended,
-  $authentication         = $foreman::params::authentication,
-  $passenger              = $foreman::params::passenger,
-) {}
+      <<~EOS
+        class foreman (
+          $foreman_url            = $foreman::params::foreman_url,
+          $unattended             = $foreman::params::unattended,
+          $authentication         = $foreman::params::authentication,
+          $passenger              = $foreman::params::passenger,
+        ) {}
       EOS
     end
 
-    it 'should detect four problems' do
+    it 'detects four problems' do
       expect(problems).to have(4).problems
     end
   end
 
   context 'define with many param defaults' do
     let(:code) do
-      <<-EOS
-define foreman (
-  $foreman_url            = $foreman::params::foreman_url,
-  $unattended             = $foreman::params::unattended,
-  $authentication         = $foreman::params::authentication,
-  $passenger              = $foreman::params::passenger,
-) {}
+      <<~EOS
+        define foreman (
+          $foreman_url            = $foreman::params::foreman_url,
+          $unattended             = $foreman::params::unattended,
+          $authentication         = $foreman::params::authentication,
+          $passenger              = $foreman::params::passenger,
+        ) {}
       EOS
     end
 
-    it 'should detect four problems' do
+    it 'detects four problems' do
       expect(problems).to have(4).problems
     end
   end
@@ -113,11 +113,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(class_msg % :foo).on_line(7).in_column(15)
     end
   end
@@ -135,11 +135,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(define_msg % :foo).on_line(7).in_column(16)
     end
   end
@@ -154,11 +154,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(class_msg % :foo).on_line(4).in_column(15)
     end
   end
@@ -175,11 +175,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect no single problems' do
+    it 'detects no single problems' do
       expect(problems).to have(0).problems
     end
 
-    it 'should not create a warning' do
+    it 'does not create a warning' do
       expect(problems).not_to contain_info(class_msg % :foo)
     end
   end
@@ -194,11 +194,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(define_msg % :foo).on_line(4).in_column(16)
     end
   end
@@ -216,11 +216,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(class_msg % :foo).on_line(7).in_column(15)
     end
   end
@@ -238,11 +238,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(define_msg % :foo).on_line(7).in_column(16)
     end
   end
@@ -260,11 +260,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect two problem' do
+    it 'detects two problem' do
       expect(problems).to have(2).problems
     end
 
-    it 'should create two warnings' do
+    it 'creates two warnings' do
       expect(problems).to contain_warning(class_msg % :foo).on_line(7).in_column(15)
       expect(problems).to contain_warning(class_msg % :baz).on_line(7).in_column(27)
     end
@@ -283,11 +283,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect two problem' do
+    it 'detects two problem' do
       expect(problems).to have(2).problems
     end
 
-    it 'should create two warnings' do
+    it 'creates two warnings' do
       expect(problems).to contain_warning(define_msg % :foo).on_line(7).in_column(16)
       expect(problems).to contain_warning(define_msg % :baz).on_line(7).in_column(28)
     end
@@ -306,11 +306,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect two problem' do
+    it 'detects two problem' do
       expect(problems).to have(2).problems
     end
 
-    it 'should create two warnings' do
+    it 'creates two warnings' do
       expect(problems).to contain_warning(class_msg % :foo).on_line(7).in_column(15)
       expect(problems).to contain_warning(class_msg % :baz).on_line(7).in_column(27)
     end
@@ -329,11 +329,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect two problem' do
+    it 'detects two problem' do
       expect(problems).to have(2).problems
     end
 
-    it 'should create two warnings' do
+    it 'creates two warnings' do
       expect(problems).to contain_warning(define_msg % :foo).on_line(7).in_column(16)
       expect(problems).to contain_warning(define_msg % :baz).on_line(7).in_column(28)
     end
@@ -352,7 +352,7 @@ define foreman (
       EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -378,18 +378,19 @@ define foreman (
       before do
         PuppetLint.configuration.docs_allowed_styles = ['noexist']
       end
+
       after do
         PuppetLint.configuration.docs_allowed_styles = false
       end
 
-      it 'should detect three problems' do
+      it 'detects three problems' do
         expect(problems).to have(3).problems
       end
 
-      it 'should create three problems' do
-        expect(problems).to contain_warning(class_style_msg % [:foo, 'kafo']).on_line(11).in_column(21)
-        expect(problems).to contain_warning(class_style_msg % [:bar, 'doc']).on_line(11).in_column(27)
-        expect(problems).to contain_warning(class_style_msg % [:foobar, 'strings']).on_line(11).in_column(33)
+      it 'creates three problems' do
+        expect(problems).to contain_warning(format(class_style_msg, :foo, 'kafo')).on_line(11).in_column(21)
+        expect(problems).to contain_warning(format(class_style_msg, :bar, 'doc')).on_line(11).in_column(27)
+        expect(problems).to contain_warning(format(class_style_msg, :foobar, 'strings')).on_line(11).in_column(33)
       end
     end
 
@@ -397,21 +398,21 @@ define foreman (
       before do
         PuppetLint.configuration.docs_allowed_styles = 'strings'
       end
+
       after do
         PuppetLint.configuration.docs_allowed_styles = nil
       end
 
-      it 'should detect two problems' do
+      it 'detects two problems' do
         expect(problems).to have(2).problems
       end
 
-      it 'should create three problems' do
-        expect(problems).to contain_warning(class_style_msg % [:foo, 'kafo']).on_line(11).in_column(21)
-        expect(problems).to contain_warning(class_style_msg % [:bar, 'doc']).on_line(11).in_column(27)
+      it 'creates three problems' do
+        expect(problems).to contain_warning(format(class_style_msg, :foo, 'kafo')).on_line(11).in_column(21)
+        expect(problems).to contain_warning(format(class_style_msg, :bar, 'doc')).on_line(11).in_column(27)
       end
     end
   end
-
 
   context 'define with all parameters documented ($foo::)' do
     let(:code) do
@@ -426,7 +427,7 @@ define foreman (
       EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -444,7 +445,7 @@ define foreman (
       EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -462,7 +463,7 @@ define foreman (
       EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -485,7 +486,7 @@ define foreman (
       EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -508,7 +509,7 @@ define foreman (
       EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -524,7 +525,7 @@ define foreman (
       EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -544,7 +545,7 @@ define foreman (
       EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -552,7 +553,7 @@ define foreman (
   context 'class without parameters' do
     let(:code) { 'class example { }' }
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -560,7 +561,7 @@ define foreman (
   context 'define without parameters' do
     let(:code) { 'define example { }' }
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -568,7 +569,7 @@ define foreman (
   context 'class without parameters and a function call' do
     let(:code) { 'class example { a($foo::bar) }' }
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -576,7 +577,7 @@ define foreman (
   context 'define without parameters and a function call' do
     let(:code) { 'define example { a($foo::bar) }' }
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -594,11 +595,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning' do
+    it 'creates a warning' do
       expect(problems).to contain_warning(class_msg % :foo).on_line(7).in_column(15)
     end
   end
@@ -621,15 +622,15 @@ define foreman (
         EOS
       end
 
-      it 'should detect two problems' do
+      it 'detects two problems' do
         expect(problems).to have(2).problem
       end
 
-      it 'should create a warning on line 3' do
+      it 'creates a warning on line 3' do
         expect(problems).to contain_warning(class_msg % :bar).on_line(3).in_column(10)
       end
 
-      it 'should create a warning on line 6' do
+      it 'creates a warning on line 6' do
         expect(problems).to contain_warning(class_msg % :bar).on_line(6).in_column(10)
       end
     end
@@ -648,15 +649,15 @@ define foreman (
         EOS
       end
 
-      it 'should detect two problems' do
+      it 'detects two problems' do
         expect(problems).to have(2).problem
       end
 
-      it 'should create a warning on line 3' do
+      it 'creates a warning on line 3' do
         expect(problems).to contain_warning(define_msg % :bar).on_line(3).in_column(10)
       end
 
-      it 'should create a warning on line 6' do
+      it 'creates a warning on line 6' do
         expect(problems).to contain_warning(define_msg % :bar).on_line(6).in_column(10)
       end
     end
@@ -678,19 +679,19 @@ define foreman (
         EOS
       end
 
-      it 'should detect three problems' do
+      it 'detects three problems' do
         expect(problems).to have(3).problem
       end
 
-      it 'should create a warning on line 3' do
+      it 'creates a warning on line 3' do
         expect(problems).to contain_warning(class_msg % :bar).on_line(3).in_column(10)
       end
 
-      it 'should create a warning on line 6' do
+      it 'creates a warning on line 6' do
         expect(problems).to contain_warning(class_msg % :bar).on_line(6).in_column(10)
       end
 
-      it 'should create a warning on line 8' do
+      it 'creates a warning on line 8' do
         expect(problems).to contain_warning(class_msg % :bar).on_line(8).in_column(10)
       end
     end
@@ -708,15 +709,15 @@ define foreman (
         EOS
       end
 
-      it 'should detect two problems' do
+      it 'detects two problems' do
         expect(problems).to have(2).problem
       end
 
-      it 'should create a warning on line 3' do
+      it 'creates a warning on line 3' do
         expect(problems).to contain_warning(class_msg % :bar).on_line(3).in_column(10)
       end
 
-      it 'should create a warning on line 4' do
+      it 'creates a warning on line 4' do
         expect(problems).to contain_warning(class_msg % :bar).on_line(4).in_column(10)
       end
     end
@@ -735,15 +736,15 @@ define foreman (
         EOS
       end
 
-      it 'should detect two problems' do
+      it 'detects two problems' do
         expect(problems).to have(2).problem
       end
 
-      it 'should create a warning on line 3' do
+      it 'creates a warning on line 3' do
         expect(problems).to contain_warning(class_msg % :bar).on_line(3).in_column(10)
       end
 
-      it 'should create a warning on line 6' do
+      it 'creates a warning on line 6' do
         expect(problems).to contain_warning(class_msg % :bar).on_line(6).in_column(3)
       end
     end
@@ -759,11 +760,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning on line 3' do
+    it 'creates a warning on line 3' do
       expect(problems).to contain_warning('No matching class parameter for documentation of example::foo').on_line(3).in_column(10)
     end
   end
@@ -781,11 +782,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning on line 3' do
+    it 'creates a warning on line 3' do
       expect(problems).to contain_warning('No matching class parameter for documentation of example::foo').on_line(3).in_column(10)
     end
   end
@@ -804,11 +805,11 @@ define foreman (
       EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning on line 4' do
+    it 'creates a warning on line 4' do
       expect(problems).to contain_warning('No matching defined type parameter for documentation of example::example::foo').on_line(4).in_column(10)
     end
   end
@@ -822,10 +823,10 @@ define foreman (
       #   Docs for the $name
       # @param bar Docs for bar
       define example::example(String[1] $bar) { }
-    EOS
+      EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -838,14 +839,14 @@ define foreman (
       # @param name
       #   Invalid docs
       class example { }
-    EOS
+      EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning on line 3' do
+    it 'creates a warning on line 3' do
       expect(problems).to contain_warning('No matching class parameter for documentation of example::name').on_line(3).in_column(10)
     end
   end
@@ -859,10 +860,10 @@ define foreman (
       #   Docs for the $title
       # @param bar Docs for bar
       define example::example(String[1] $bar) { }
-    EOS
+      EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -875,14 +876,14 @@ define foreman (
       # @param title
       #   Invalid docs
       class example { }
-    EOS
+      EOS
     end
 
-    it 'should detect a single problem' do
+    it 'detects a single problem' do
       expect(problems).to have(1).problem
     end
 
-    it 'should create a warning on line 3' do
+    it 'creates a warning on line 3' do
       expect(problems).to contain_warning('No matching class parameter for documentation of example::title').on_line(3).in_column(10)
     end
   end
@@ -898,18 +899,18 @@ define foreman (
       #   Docs for the $name
       # @param bar Docs for bar
       define example(String[1] $bar) { }
-    EOS
+      EOS
     end
 
-    it 'should detect two problems' do
+    it 'detects two problems' do
       expect(problems).to have(2).problems
     end
 
-    it 'should create a warning on line 3' do
+    it 'creates a warning on line 3' do
       expect(problems).to contain_warning('Duplicate defined type parameter documentation for example::name/title').on_line(3).in_column(10)
     end
 
-    it 'should create a warning on line 5' do
+    it 'creates a warning on line 5' do
       expect(problems).to contain_warning('Duplicate defined type parameter documentation for example::name/title').on_line(5).in_column(10)
     end
   end
@@ -951,7 +952,7 @@ define foreman (
       EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       expect(problems).to have(0).problems
     end
   end
@@ -1001,7 +1002,7 @@ define foreman (
       EOS
     end
 
-    it 'should not detect any problems' do
+    it 'does not detect any problems' do
       puts problems
       expect(problems).to have(0).problems
     end

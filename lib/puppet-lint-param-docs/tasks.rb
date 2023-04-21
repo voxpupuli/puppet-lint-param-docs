@@ -12,7 +12,7 @@ module PuppetLintParamDocs
   class RakeTask < ::Rake::TaskLib
     include ::Rake::DSL if defined?(::Rake::DSL)
 
-    def define_selective(&task_block)
+    def define_selective
       PuppetLint::RakeTask.new(:lint_param_docs) do |config|
         config.fail_on_warnings = true
         config.disable_checks = (PuppetLint.configuration.checks - [:parameter_documentation])
