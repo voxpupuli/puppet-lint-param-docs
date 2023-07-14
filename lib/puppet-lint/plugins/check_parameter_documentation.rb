@@ -83,7 +83,7 @@ PuppetLint.new_check(:parameter_documentation) do
   private
 
   def type_str(idx)
-    idx[:type] == :CLASS ? 'class' : 'defined type'
+    (idx[:type] == :CLASS) ? 'class' : 'defined type'
   end
 
   def extract_params(idx)
