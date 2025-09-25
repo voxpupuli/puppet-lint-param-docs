@@ -5,8 +5,8 @@ module PuppetLintParamDocs
   #
   # Allows users to define a more restrictive pattern for param docs
   # checks.
-  def self.define_selective(&task_block)
-    RakeTask.new.define_selective(&task_block)
+  def self.define_selective(&)
+    RakeTask.new.define_selective(&)
   end
 
   class RakeTask < ::Rake::TaskLib
