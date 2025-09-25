@@ -2,9 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.0](https://github.com/voxpupuli/puppet-lint-param-docs/tree/2.0.0) (2023-04-21)
+## [3.0.0](https://github.com/voxpupuli/puppet-lint-param-docs/tree/3.0.0) (2025-09-25)
 
-[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.6...2.0.0)
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v2.0.0...3.0.0)
+
+**Breaking changes:**
+
+- Require Ruby 3.2+ & puppet-lint 5.1+ [\#64](https://github.com/voxpupuli/puppet-lint-param-docs/pull/64) ([bastelfreak](https://github.com/bastelfreak))
+
+## [v2.0.0](https://github.com/voxpupuli/puppet-lint-param-docs/tree/v2.0.0) (2023-04-21)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-lint-param-docs/compare/v1.7.6...v2.0.0)
 
 **Breaking changes:**
 
